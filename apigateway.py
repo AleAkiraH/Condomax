@@ -12,6 +12,8 @@ import fnc_alterar_senha
 import fnc_listar_perfis
 import fnc_listar_novos_usuarios
 import fnc_atrelar_perfil
+import fnc_cadastro_novo_comunicado
+import fnc_listar_comunicados
 # endregion
 
 # region setup
@@ -69,6 +71,15 @@ def atrelar_perfil():
     return fnc_atrelar_perfil.atrelar_perfil(modelRequest)
 
 
+@app.route('/cadastrar_novo_comunicado', methods=['POST'])
+def cadastrar_novo_comunicado():
+    modelRequest = request.json
+    return fnc_cadastro_novo_comunicado.cadastrar_novo_comunicado(modelRequest)
+
+
+@app.route('/listar_comunicados', methods=['GET'])
+def listar_comunicados():
+    return fnc_listar_comunicados.listar_comunicados()
 # endregion
 
 
