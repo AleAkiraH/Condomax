@@ -1,6 +1,28 @@
 from Libs.conexao_banco import ConexaoBanco
-from Libs import passCrypt
 import json
+
+
+def remover_anexos_antigos(idsanexos_antigos):
+    try:
+        conexao = ConexaoBanco()
+        lista_ids = json.loads(idsanexos_antigos)
+        placeholders = ','.join('?' for _ in lista_ids)
+
+        conexao.cursor.execute('''
+            DELETE FROM comunicados_anexos
+            WHERE id IN ({})
+        '''.format(placeholders), tuple(lista_ids))
+
+        conexao.conn.commit()
+        resultado = {"status": "success",
+                     "message": "Anexos removidos com sucesso!"}
+        return json.dumps(resultado)
+    except Exception as e:
+        resultado = {"status": "error",
+                     "message": "Erro ao remover anexos: " + str(e)}
+        return json.dumps(resultado)
+    finally:
+        conexao.fechar_conexao()
 
 
 def cadastrar_anexos(anexos_bs64):
@@ -52,35 +74,41 @@ def cadastrar_anexos(anexos_bs64):
     return json.dumps(resultado)
 
 
-def cadastrar_comunicado(titulo, descricao, idsanexos):
+def alterar_id_comunicado(titulo, descricao, idsanexos, id_comunicado):
     try:
         conexao = ConexaoBanco()
         conexao.cursor.execute('''
-            INSERT INTO comunicados (titulo, descricao, idsanexos)
-            VALUES (?, ?, ?)
-        ''', (titulo, descricao, str(idsanexos)))
+            update comunicados set titulo=?, descricao=?, idsanexos=?
+            where id =?
+            
+        ''', (titulo, descricao, str(idsanexos), id_comunicado))
 
         conexao.conn.commit()
         resultado = {"status": "success",
-                     "message": "Comunicado inserido com sucesso!"}
+                     "message": "Comunicado alterado com sucesso!"}
         return json.dumps(resultado)
     except Exception as e:
         resultado = {"status": "error",
-                     "message": "Erro ao cadastrar cliente: " + str(e)}
+                     "message": "Erro ao alterar comunicado: " + str(e)}
         return json.dumps(resultado)
     finally:
         conexao.fechar_conexao()
 
 
-def cadastrar_novo_comunicado(modelRequest):
+def alterar_comunicado(modelRequest):
 
     titulo = modelRequest['titulo']
     descricao = modelRequest['descricao']
     anexos_bs64 = modelRequest['anexos_bs64']
+    id_comunicado = modelRequest['id_comunicado']
+    idsanexos_antigos = modelRequest['idsanexos_antigos']
 
     anexos_cadastrados = cadastrar_anexos(anexos_bs64)
 
     idsanexos = json.dumps(json.loads(anexos_cadastrados)["ids_inseridos"])
-    resultado = cadastrar_comunicado(titulo, descricao, idsanexos)
+    remover_anexos_antigos(idsanexos_antigos)
+
+    resultado = alterar_id_comunicado(
+        titulo, descricao, idsanexos, id_comunicado)
 
     return resultado

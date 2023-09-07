@@ -14,6 +14,8 @@ import fnc_listar_novos_usuarios
 import fnc_atrelar_perfil
 import fnc_cadastro_novo_comunicado
 import fnc_listar_comunicados
+import fnc_deletar_comunicado
+import fnc_alterar_comunicado
 # endregion
 
 # region setup
@@ -80,6 +82,19 @@ def cadastrar_novo_comunicado():
 @app.route('/listar_comunicados', methods=['GET'])
 def listar_comunicados():
     return fnc_listar_comunicados.listar_comunicados()
+
+
+@app.route('/deletar_comunicado', methods=['POST'])
+def deletar_comunicado():
+    modelRequest = request.json
+    return fnc_deletar_comunicado.deletar_comunicado(modelRequest)
+
+
+@app.route('/alterar_comunicado', methods=['POST'])
+def alterar_comunicado():
+    modelRequest = request.json
+    return fnc_alterar_comunicado.alterar_comunicado(modelRequest)
+
 # endregion
 
 

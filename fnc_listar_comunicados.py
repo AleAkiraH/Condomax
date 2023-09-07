@@ -7,13 +7,13 @@ def listar_comunicados():
     try:
         conexao = ConexaoBanco()
         conexao.cursor.execute('''
-            select id, titulo, descricao, idanexo, data_insercao from comunicados order by id desc
+            select id, titulo, descricao, idsanexos, data_insercao from comunicados where excluido = 0 order by id desc
         ''')
 
         # Recupere todas as linhas retornadas pela consulta
         linhas = conexao.cursor.fetchall()
 
-        resultado_json = [{'id': linha[0], 'titulo': linha[1], 'descricao': linha[2], 'idanexo': linha[3], 'data_insercao': linha[4]}
+        resultado_json = [{'id': linha[0], 'titulo': linha[1], 'descricao': linha[2], 'idsanexos': linha[3], 'data_insercao': linha[4]}
                           for linha in linhas]
 
         # Converta a lista de dicionários em JSON

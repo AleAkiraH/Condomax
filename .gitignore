@@ -7,3 +7,5 @@
 /__pycache__/fnc_listar_novos_usuarios.cpython-311.pyc
 /__pycache__/fnc_listar_perfis.cpython-311.pyc
 /__pycache__/fnc_login.cpython-311.pyc
+/__pycache__/fnc_alterar_comunicado.cpython-311.pyc
+/__pycache__/fnc_deletar_comunicado.cpython-311.pyc
