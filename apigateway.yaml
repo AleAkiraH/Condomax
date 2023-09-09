@@ -1,0 +1,60 @@
+openapi: 3.0.0
+info:
+  title: Exemplo de API Gateway com Validador de Solicitação
+  version: 1.0.0
+x-amazon-apigateway-request-validators:
+    body:
+        validateRequestBody: true
+        validateRequestParameters: false
+    params:
+        validateRequestBody: false
+        validateRequestParameters: true
+    all:
+        validateRequestBody: false
+        validateRequestParameters: false
+paths:
+  /TESTEAPIGATEWAY:
+    post:
+      summary: TESTEAPIGATEWAY
+      x-amazon-apigateway-request-validator: all      
+      responses:
+        '200':
+          description: Sucesso
+        '400':
+          description: Parâmetros inválidos
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        httpMethod: POST
+        uri: arn:aws:apigateway:sa-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:sa-east-1:695284873308:function:TESTEAPIGATEWAY/invocations
+      security:
+        - AWS_IAM: []
+  /cadastro:
+    post:
+      summary: Cadastro de um novo usuário
+      x-amazon-apigateway-request-validator: all
+      responses:
+        '200':
+          description: Sucesso
+        '400':
+          description: Parâmetros inválidos
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        httpMethod: POST
+        uri: arn:aws:apigateway:sa-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:sa-east-1:695284873308:function:fnc_cadastro/invocations
+      security:
+        - AWS_IAM: []
+  /login:
+    post:
+      summary: Cadastro de um novo usuário
+      x-amazon-apigateway-request-validator: all
+      responses:
+        '200':
+          description: Sucesso
+        '400':
+          description: Parâmetros inválidos
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        httpMethod: POST
+        uri: arn:aws:apigateway:sa-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:sa-east-1:695284873308:function:fnc_login/invocations
+      security:
+        - AWS_IAM: []
