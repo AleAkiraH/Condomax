@@ -1,13 +1,12 @@
 import fnc_cadastro
-import os
 import mysql.connector
 
 def lambda_handler(event, context):
     
     # Obtenha os valores das variáveis de ambiente ou forneça valores padrão
-    host = 'dbcondo.col7rp2zntqo.sa-east-1.rds.amazonaws.com' # host = os.environ.get('host')
+    host = 'localhost' # host = os.environ.get('host')
     user = 'administrador' # user = os.environ.get('user')
-    password = 'administrador' # password = os.environ.get('password')
+    password = 'Jhe@472642947' # password = os.environ.get('password')
     database = 'DBCondo' # database = os.environ.get('database')
 
     # Configurar as credenciais do banco de dados

@@ -18,6 +18,7 @@ def login_cliente(modelRequest, conexao):
                 "status": "success",
                 "message": "Login bem-sucedido"
             }
+            print(resultado)
             return {
             'statusCode': 200,
             'body': json.dumps(resultado)
@@ -27,6 +28,7 @@ def login_cliente(modelRequest, conexao):
                 "status": "error",
                 "message": "Credenciais inválidas"
             }
+            print(resultado)
             return {
             'statusCode': 400,
             'body': json.dumps(resultado)
@@ -36,6 +38,7 @@ def login_cliente(modelRequest, conexao):
             "status": "error",
             "message": "Erro ao fazer login: " + str(e)
         }
+        print(resultado)
         return {
             'statusCode': 400,
             'body': json.dumps(resultado)

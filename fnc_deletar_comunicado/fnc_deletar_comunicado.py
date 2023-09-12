@@ -1,26 +1,30 @@
-from Libs.conexao_banco import ConexaoBanco
 import json
 
-
-def deletar_comunicado(modelRequest):
-
+def deletar_comunicado(modelRequest, conexao):
+    
+    modelRequest = json.loads(modelRequest['body'])
     id_comunicado = modelRequest['id_comunicado']
-    excluido = True
+    excluido = 1
 
     try:
-        conexao = ConexaoBanco()
-        conexao.cursor.execute('''
-            UPDATE comunicados set excluido=?
-            where id = ?
-        ''', (excluido, id_comunicado))
+        cursor = conexao.cursor()
+        cursor.execute("UPDATE comunicados set excluido="+str(excluido)+" where id = '"+str(id_comunicado)+"'")
 
-        conexao.conn.commit()
+        conexao.commit()
         resultado = {"status": "success",
                      "message": "Comunicado excluido com sucesso!"}
+        print(resultado)
+        return {
+            'statusCode': 200,
+            'body': json.dumps(resultado)
+        }
     except Exception as e:
         resultado = {"status": "error",
                      "message": "Erro ao excluir comunicado: " + str(e)}
+        print(resultado)
+        return {
+            'statusCode': 400,
+            'body': json.dumps(resultado)
+        }
     finally:
-        conexao.fechar_conexao()
-
-    return json.dumps(resultado)
+        conexao.close()

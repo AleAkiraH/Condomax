@@ -1,26 +1,32 @@
-from Libs.conexao_banco import ConexaoBanco
 import json
 
+def atualizar_cadastro(modelRequest, conexao):
 
-def atualizar_cadastro(modelRequest):
-
+    modelRequest = json.loads(modelRequest['body'])
     nome = modelRequest['nome'].lower()
     telefone = modelRequest['telefone'].lower()
     email = modelRequest['email'].lower()
 
     try:
-        conexao = ConexaoBanco()
-        conexao.cursor.execute('''
-            UPDATE clientes set nome=?, telefone=?, email=?
-        ''', (nome, telefone, email))
+        cursor = conexao.cursor()
+        
+        cursor.execute("UPDATE clientes set nome='"+nome+"', telefone='"+telefone+"', email='"+email+"'")
 
-        conexao.conn.commit()
+        conexao.commit()
         resultado = {"status": "success",
                      "message": "Cliente atualizado com sucesso!"}
+        print(resultado)
+        return {
+            'statusCode': 200,
+            'body': json.dumps(resultado)
+        }
     except Exception as e:
         resultado = {"status": "error",
                      "message": "Erro ao atualizar cliente: " + str(e)}
+        print(resultado)
+        return {
+            'statusCode': 400,
+            'body': json.dumps(resultado)
+        }
     finally:
-        conexao.fechar_conexao()
-
-    return json.dumps(resultado)
+        conexao.close()

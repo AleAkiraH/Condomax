@@ -1,10 +1,10 @@
-from Libs.conexao_banco import ConexaoBanco
 import passCrypt
 import json
 
 
-def alterar_senha(modelRequest):
+def alterar_senha(modelRequest, conexao):
 
+    modelRequest = json.loads(modelRequest['body'])
     usuario = modelRequest['usuario'].lower()
     senha = modelRequest['senha'].lower()
     password_crypt = passCrypt.pass_encrypt(senha, usuario)
@@ -14,25 +14,32 @@ def alterar_senha(modelRequest):
     if (password_crypt != repassword_crypt):
         resultado = {"status": "error",
                      "message": "As senhas e confirmação de senha não são iguais.!"}
-        return json.dumps(resultado)
-
+        print(resultado)
+        return {
+            'statusCode': 400,
+            'body': json.dumps(resultado)
+        }
     try:
+        cursor = conexao.cursor()
+        cursor.execute("UPDATE clientes SET senha ='"+password_crypt+"' WHERE usuario='"+usuario+"'")
 
-        conexao = ConexaoBanco()
-        conexao.cursor.execute('''
-           UPDATE clientes SET senha =?
-           WHERE usuario=?
-        ''', (password_crypt, usuario))
+        resultado = cursor.fetchone()
 
-        resultado = conexao.cursor.fetchone()
-
-        conexao.conn.commit()
+        conexao.commit()
         resultado = {"status": "success",
                      "message": "Senha atualizada com sucesso!"}
+        print(resultado)
+        return {
+            'statusCode': 200,
+            'body': json.dumps(resultado)
+        }
     except Exception as e:
         resultado = {"status": "error",
                      "message": "Erro ao atualizar sua senha: " + str(e)}
+        print(resultado)
+        return {
+            'statusCode': 400,
+            'body': json.dumps(resultado)
+        }
     finally:
-        conexao.fechar_conexao()
-
-    return json.dumps(resultado)
+        conexao.close()
