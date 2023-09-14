@@ -8,7 +8,7 @@ aws_access_key_id, aws_secret_access_key, aws_region = getcredentials()
 
 def atualizar_lambda():
     # Nome da função Lambda e nome do arquivo ZIP
-    function_name = 'fnc_login'
+    function_name = 'fnc_enviar_push_notification'
     zip_file_name = function_name + '.zip'
 
     if (function_name == 'RENOMEARAQUI'):

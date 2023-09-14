@@ -51,9 +51,9 @@ CREATE TABLE IF NOT EXISTS notificacoes (
     usuario_criador_id INT NOT NULL DEFAULT 0, -- Alterar posteriormente para utilizar o id do usuário que fez o insert
     data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
 	data_envio DATETIME DEFAULT CURRENT_TIMESTAMP,    
-    sucesso BIT DEFAULT 0,
-    FOREIGN KEY (usuario_id) REFERENCES clientes(id)
-    -- Adicionar posteriormente foreign key do usuário que fez o insert
+    sucesso BIT DEFAULT 0
+    /*,FOREIGN KEY (usuario_id) REFERENCES clientes(id)*/
+    -- Adicionar posteriormente foreign key do usuário que fez o insert e usuário destino
 );
 
 

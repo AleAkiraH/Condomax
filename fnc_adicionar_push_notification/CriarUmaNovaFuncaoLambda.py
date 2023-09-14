@@ -11,7 +11,7 @@ aws_access_key_id, aws_secret_access_key, aws_region = getcredentials()
 
 def implantar_lambda():
     # Nome da função Lambda e nome do arquivo ZIP
-    function_name = 'fnc_login'
+    function_name = 'fnc_adicionar_push_notification'
     # ARN da chave KMS que você deseja associar à função Lambda
 
     # Crie um cliente AWS IAM

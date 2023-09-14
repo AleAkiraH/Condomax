@@ -7,7 +7,7 @@ aws_access_key_id, aws_secret_access_key, aws_region = getcredentials()
 
 def deletar_lambda():
     # Nome da função Lambda e nome da função IAM
-    function_name = 'fnc_login'
+    function_name = 'fnc_adicionar_push_notification'
     role_name = function_name+'IAM'
 
     if (function_name == 'RENOMEARAQUI'):
