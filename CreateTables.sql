@@ -41,6 +41,22 @@ CREATE TABLE IF NOT EXISTS comunicados_anexos (
     anexos_bs64 TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS notificacoes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    titulo_mensagem VARCHAR(255) NOT NULL,
+    texto_mensagem VARCHAR(255) NOT NULL,
+    telefone VARCHAR(13) NOT NULL,  
+    token VARCHAR(13) NOT NULL,
+    usuario_id INT NOT NULL,
+    usuario_criador_id INT NOT NULL DEFAULT 0, -- Alterar posteriormente para utilizar o id do usuário que fez o insert
+    data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
+	data_envio DATETIME DEFAULT CURRENT_TIMESTAMP,    
+    sucesso BIT DEFAULT 0,
+    FOREIGN KEY (usuario_id) REFERENCES clientes(id)
+    -- Adicionar posteriormente foreign key do usuário que fez o insert
+);
+
+
 -- Inserções de perfis
 INSERT INTO perfis (perfil, descricao) VALUES ('Administrador', 'Perfil com acesso administrativo ao sistema.');
 INSERT INTO perfis (perfil, descricao) VALUES ('Síndico', 'Perfil para os síndicos do condomínio.');
